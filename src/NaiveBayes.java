@@ -20,7 +20,7 @@ public class NaiveBayes {
         int ct_dst_src_ltm = 12;
         int ct_flw_http_mthd=13;
         int ct_srv_dst=14;
-        int	is_sm_ips_ports=15;
+        int	trans_depth=15;
         int attack_cat=16;
 
 
