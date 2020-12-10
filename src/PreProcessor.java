@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Scanner; // Import the Scanner class to read text files
+import java.util.Scanner;
 
 
 public class PreProcessor {
@@ -13,13 +13,15 @@ public class PreProcessor {
         int sbytes=7;
         int dttl=11;
         int sjit=18;
-        int stcpb=21;
         int ackdat=26;
         int smean=27;
         int dmean=28;
         int ct_state_ttl=32;
         int ct_dst_src_ltm=36;
-
+        int ct_flw_http_mthd=39;
+        int ct_srv_dst=41;
+        int	is_sm_ips_ports=42;
+        int attack_cat=43;
         try {
             File trainingSet = new File("UNSW_NB15_training-set.csv");
             File reducedTrainingSet = new File("reduced_training-set.csv");
@@ -31,8 +33,8 @@ public class PreProcessor {
                 String[] datum = data.split(",");
                 bw.write(datum[dur]+","+datum[proto]+","+datum[service]+","+
                         datum[state]+","+datum[dpkts]+","+datum[sbytes]+","+datum[dttl]+","+
-                        datum[sjit]+","+datum[stcpb]+","+datum[ackdat]+","+datum[smean]+","+
-                        datum[dmean]+","+datum[ct_state_ttl]+","+datum[ct_dst_src_ltm]);
+                        datum[sjit]+","+datum[ackdat]+","+datum[smean]+","+
+                        datum[dmean]+","+datum[ct_state_ttl]+","+datum[ct_dst_src_ltm]+","+datum[ct_flw_http_mthd]+","+datum[ct_srv_dst]+","+datum[is_sm_ips_ports]+","+datum[attack_cat]);
                 bw.newLine();
             }
             scanner.close();
