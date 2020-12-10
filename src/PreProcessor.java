@@ -20,7 +20,7 @@ public class PreProcessor {
         int ct_dst_src_ltm=36;
         int ct_flw_http_mthd=39;
         int ct_srv_dst=41;
-        int	is_sm_ips_ports=42;
+        int	trans_depth=29;
         int attack_cat=43;
         try {
             File trainingSet = new File("UNSW_NB15_training-set.csv");
@@ -34,7 +34,7 @@ public class PreProcessor {
                 bw.write(datum[dur]+","+datum[proto]+","+datum[service]+","+
                         datum[state]+","+datum[dpkts]+","+datum[sbytes]+","+datum[dttl]+","+
                         datum[sjit]+","+datum[ackdat]+","+datum[smean]+","+
-                        datum[dmean]+","+datum[ct_state_ttl]+","+datum[ct_dst_src_ltm]+","+datum[ct_flw_http_mthd]+","+datum[ct_srv_dst]+","+datum[is_sm_ips_ports]+","+datum[attack_cat]);
+                        datum[dmean]+","+datum[ct_state_ttl]+","+datum[ct_dst_src_ltm]+","+datum[ct_flw_http_mthd]+","+datum[ct_srv_dst]+","+datum[trans_depth]+","+datum[attack_cat]);
                 bw.newLine();
             }
             scanner.close();
