@@ -36,9 +36,13 @@ public class NaiveBayes {
         int shellcode=7;
         int worms=8;
 
-        int protoUpdate= 0;
+        int update= 0;
 
         Hashtable<String,Double>[] protoCount = new Hashtable[9];
+        Hashtable<String,Double>[] serviceCount = new Hashtable[9];
+        Hashtable<String,Double>[] stateCount = new Hashtable[9];
+        Hashtable<String,Double>[] ct_state_ttlCount = new Hashtable[9];
+
         try {
             File trainingSet = new File("reduced_training-set.csv");
             Scanner scanner = new Scanner(trainingSet);
@@ -47,35 +51,59 @@ public class NaiveBayes {
                 String[] datum = data.split(",");
                 switch (datum[attack_cat]){
                     case "Analysis":
-                        protoUpdate= analysis;
+                        update= analysis;
                         break;
                     case "Backdoor":
-                        protoUpdate= backdoor;
+                        update= backdoor;
                         break;
                     case "DoS":
-                        protoUpdate= dos;
+                        update= dos;
                         break;
                     case "Exploits":
-                        protoUpdate= exploits;
+                        update= exploits;
                         break;
                     case "Fuzzers":
-                        protoUpdate= fuzzers;
+                        update= fuzzers;
                         break;
                     case "Generic":
-                        protoUpdate= generic;
+                        update= generic;
                         break;
                     case "Reconnaissance":
-                        protoUpdate= reconnaissance;
+                        update= reconnaissance;
                         break;
                     case "Shellcode":
-                        protoUpdate= shellcode;
+                        update= shellcode;
                         break;
                 }
-                if(protoCount[protoUpdate].containsKey(datum[proto])){
-                    protoCount[protoUpdate].put(datum[proto],protoCount[protoUpdate].get(datum[proto])+1.0);
+                //proto count update, w/h laplace smoothing
+                if(protoCount[update].containsKey(datum[proto])){
+                    protoCount[update].put(datum[proto],protoCount[update].get(datum[proto])+1.0);
                 }
                 else{
-                    protoCount[protoUpdate].put(datum[proto],0.0);
+                    protoCount[update].put(datum[proto],1.0);
+                }
+                //service count update, w/h laplace smoothing
+                if(serviceCount[update].containsKey(datum[service])){
+                    serviceCount[update].put(datum[service],serviceCount[update].get(datum[service])+1.0);
+                }
+                else{
+                    serviceCount[update].put(datum[service],1.0);
+                }
+                //state count update, w/h laplace smoothing
+
+                if(stateCount[update].containsKey(datum[state])){
+                    stateCount[update].put(datum[state],stateCount[update].get(datum[state])+1.0);
+                }
+                else{
+                    stateCount[update].put(datum[state],1.0);
+                }
+                //ct_state_ttl count update, w/h laplace smoothing
+
+                if(ct_state_ttlCount[update].containsKey(datum[ct_state_ttl])){
+                    ct_state_ttlCount[update].put(datum[ct_state_ttl],ct_state_ttlCount[update].get(datum[ct_state_ttl])+1.0);
+                }
+                else{
+                    ct_state_ttlCount[update].put(datum[ct_state_ttl],1.0);
                 }
             }
             scanner.close();
