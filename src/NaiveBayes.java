@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -24,19 +26,19 @@ public class NaiveBayes {
         int attack_cat=16;
 
 
-        float analysis=0;
-        float backdoor=1;
-        float dos=2;
-        float exploits=3;
-        float fuzzers=4;
-        float generic=5;
-        float reconnaissance=6;
-        float shellcode=7;
-        float worms=8;
+        int analysis=0;
+        int backdoor=1;
+        int dos=2;
+        int exploits=3;
+        int fuzzers=4;
+        int generic=5;
+        int reconnaissance=6;
+        int shellcode=7;
+        int worms=8;
 
+        int protoUpdate= 0;
 
-        float[][] count= new float[15][7];
-
+        Hashtable<String,Double>[] protoCount = new Hashtable[9];
         try {
             File trainingSet = new File("reduced_training-set.csv");
             Scanner scanner = new Scanner(trainingSet);
@@ -45,9 +47,35 @@ public class NaiveBayes {
                 String[] datum = data.split(",");
                 switch (datum[attack_cat]){
                     case "Analysis":
+                        protoUpdate= analysis;
                         break;
                     case "Backdoor":
+                        protoUpdate= backdoor;
                         break;
+                    case "DoS":
+                        protoUpdate= dos;
+                        break;
+                    case "Exploits":
+                        protoUpdate= exploits;
+                        break;
+                    case "Fuzzers":
+                        protoUpdate= fuzzers;
+                        break;
+                    case "Generic":
+                        protoUpdate= generic;
+                        break;
+                    case "Reconnaissance":
+                        protoUpdate= reconnaissance;
+                        break;
+                    case "Shellcode":
+                        protoUpdate= shellcode;
+                        break;
+                }
+                if(protoCount[protoUpdate].containsKey(datum[proto])){
+                    protoCount[protoUpdate].put(datum[proto],protoCount[protoUpdate].get(datum[proto])+1.0);
+                }
+                else{
+                    protoCount[protoUpdate].put(datum[proto],0.0);
                 }
             }
             scanner.close();
