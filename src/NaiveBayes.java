@@ -1,4 +1,5 @@
 
+import java.awt.image.Kernel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
@@ -49,12 +50,15 @@ public class NaiveBayes {
     private static int shellcode=7;
     private static int worms=8;
     private static int normal=9;
+
+    private static double[] attackCount= new double[]{1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+
     public static void main(String[] args) {
        Hashtable<String,Double>[][] discParam = DiscreteParameters(); //proto,service,state,ct_state_ttl
-        Pair[][] contParam = MeanStdDevContParameters();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
+        KernelDensityEstimator[][] contParam = KernelDensityProb();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
         //ct_srv_dst, trans_depth, attack_cat
 
-        List<String>[] results = GaussianEstimator(discParam,contParam);
+        List<String>[] results = KDE(discParam,contParam);
         double fullycorrect =0.0;
         double fullywrong = 0.0;
         double partialcorrect =0.0;
@@ -86,11 +90,146 @@ public class NaiveBayes {
 
     }
 
-    private static double pi = 3.14159265359;
-    private static Hashtable<String,Double>[][] DiscreteParameters() {
+    private static KernelDensityEstimator[][] KernelDensityProb() {
+
+        int analysis=0;
+        int backdoor=1;
+        int dos=2;
+        int exploits=3;
+        int fuzzers=4;
+        int generic=5;
+        int reconnaissance=6;
+        int shellcode=7;
+        int worms=8;
+        int normal=9;
+        Scanner scanner=null;
+
         int update= 0;
 
-        double[] attackCount= new double[]{1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+        KernelDensityEstimator[][] KernelDensityProb = new KernelDensityEstimator[13][10];
+        for (int i=0;i<13;i++){
+            for (int j=0;j<10;j++){
+                KernelDensityProb[i][j]=new KernelDensityEstimator();
+            }
+        }
+
+        try {
+            File trainingSet = new File("reduced_training-set.csv");
+            scanner = new Scanner(trainingSet);
+            scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                String data = scanner.nextLine();
+                String[] datum = data.split(",");
+                switch (datum[attack_cat]){
+                    case "Analysis":
+                        update= analysis;
+                        break;
+                    case "Backdoor":
+                        update= backdoor;
+                        break;
+                    case "DoS":
+                        update= dos;
+                        break;
+                    case "Exploits":
+                        update= exploits;
+                        break;
+                    case "Fuzzers":
+                        update= fuzzers;
+                        break;
+                    case "Generic":
+                        update= generic;
+                        break;
+                    case "Reconnaissance":
+                        update= reconnaissance;
+                        break;
+                    case "Shellcode":
+                        update= shellcode;
+                        break;
+                    case "Worms":
+                        update= worms;
+                        break;
+                    default:
+                        update= normal;
+                        break;
+                }
+                for (int i = 0; i < 12; i++) {
+                    KernelDensityProb[i][update].add(parseDouble(datum[contFeatures[i]]));
+
+                }
+            }
+        }
+        catch (FileNotFoundException e){
+            System.out.println("FileNotFoundException.");
+            e.printStackTrace();
+        }
+        finally {
+            scanner.close();
+        }
+
+        return KernelDensityProb;
+    }
+
+    private static List<String>[] KDE(Hashtable<String,Double>[][] discParam,KernelDensityEstimator[][] contParam){
+        Scanner scanner=null;
+        double attackSum =0.0;
+
+        for (double count:attackCount) {
+            attackSum += count;
+        }
+        List<String>[] results = new ArrayList[]{new ArrayList<String>(),new ArrayList<String>()};
+        String[] attacks = new String[]{"Analysis","Backdoor","DoS","Exploits","Fuzzers","Generic","Reconnaissance","Shellcode","Worms","Normal"};
+        try {
+            scanner = new Scanner(testingSet);
+            scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                double[] ProbAttacks = new double[10];
+                for (int i = 0; i < 10; i++) {
+                    ProbAttacks[i]=log(attackCount[i]/attackSum);
+                }
+                String data = scanner.nextLine();
+                String[] datum = data.split(",");
+                results[0].add(datum[attack_cat]);
+
+                for (int attack = 0; attack < 10; attack++) {
+                    //discrete features
+                    for (int feature = 0; feature < 4; feature++) {
+                        if (discParam[1][attack].containsKey(datum[discFeatures[feature]])) {
+                            ProbAttacks[attack] = ProbAttacks[attack] + log(discParam[1][attack].get(datum[discFeatures[feature]]));
+                        }
+                        else {
+                            ProbAttacks[attack] = ProbAttacks[attack] + log(discParam[1][attack].get("smallest"));
+                        }
+                    }
+
+                    //continous features
+                    for (int feature = 0; feature < 12; feature++) {
+                        double x = parseDouble(datum[contFeatures[feature]]);
+                        ProbAttacks[attack] = ProbAttacks[attack] + log(contParam[feature][attack].getProb(x));
+                    }
+
+                }
+                int greatest = 1;
+                for (int i = 1; i < 10; i++) {
+                    if(ProbAttacks[i]<ProbAttacks[greatest]){
+                        greatest=i;
+                    }
+                }
+                results[1].add(attacks[greatest]);
+
+            }
+        }
+        catch (FileNotFoundException e){
+            System.out.println("FileNotFoundException.");
+            e.printStackTrace();
+        }
+        finally {
+            scanner.close();
+        }
+        return results;
+    }
+
+    private static Hashtable<String,Double>[][] DiscreteParameters() {
+        int update= 0;
 
         Hashtable<String,Double>[][] featureCount = new Hashtable[4][10];
         for(int i=0; i<4;i++){
@@ -170,7 +309,8 @@ public class NaiveBayes {
         return featureCount;
 
     }
-    private static Pair[][] MeanStdDevContParameters() {
+
+    private static Gaussian[][] GaussianProb() {
 
         int analysis=0;
         int backdoor=1;
@@ -201,7 +341,7 @@ public class NaiveBayes {
 
         try {
             File trainingSet = new File("reduced_training-set.csv");
-             scanner = new Scanner(trainingSet);
+            scanner = new Scanner(trainingSet);
             scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String data = scanner.nextLine();
@@ -268,48 +408,62 @@ public class NaiveBayes {
         finally {
             scanner.close();
         }
-        return contParam;
+
+        Gaussian[][] GaussianProb = new Gaussian[13][10];
+        for (int i=0;i<13;i++){
+            for (int j=0;j<10;j++){
+                GaussianProb[i][j]=new Gaussian(contParam[i][j].getLeft(),contParam[i][j].getRight());
+            }
+        }
+        return GaussianProb;
     }
 
-    private static List<String>[] GaussianEstimator(Hashtable<String,Double>[][] discParam,Pair[][] contParam){
+    private static List<String>[] GaussianEstimator(Hashtable<String,Double>[][] discParam,Gaussian[][] contParam){
             Scanner scanner=null;
+            double attackSum =0.0;
+
+            for (double count:attackCount) {
+                attackSum += count;
+            }
             List<String>[] results = new ArrayList[]{new ArrayList<String>(),new ArrayList<String>()};
             String[] attacks = new String[]{"Analysis","Backdoor","DoS","Exploits","Fuzzers","Generic","Reconnaissance","Shellcode","Worms","Normal"};
             try {
                 scanner = new Scanner(testingSet);
                 scanner.nextLine();
                 while (scanner.hasNextLine()) {
-                    double[] ProbAttacks = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+                    double[] ProbAttacks = new double[10];
+                    for (int i = 0; i < 10; i++) {
+                        ProbAttacks[i]=log(attackCount[i]/attackSum);
+                    }
                     String data = scanner.nextLine();
                     String[] datum = data.split(",");
                     results[0].add(datum[attack_cat]);
 
                     for (int attack = 0; attack < 10; attack++) {
+                        //discrete features
                         for (int feature = 0; feature < 4; feature++) {
                             if (discParam[1][attack].containsKey(datum[discFeatures[feature]])) {
-                                ProbAttacks[attack] = ProbAttacks[attack] * discParam[1][attack].get(datum[discFeatures[feature]]);
+                                ProbAttacks[attack] = ProbAttacks[attack] + log(discParam[1][attack].get(datum[discFeatures[feature]]));
                             }
                             else {
-                                ProbAttacks[attack] = ProbAttacks[attack] * discParam[1][attack].get("smallest")*0.5;
+                                ProbAttacks[attack] = ProbAttacks[attack] + log(discParam[1][attack].get("smallest"));
                             }
                         }
 
-
+                        //continous features
                         for (int feature = 0; feature < 12; feature++) {
-                            double mean = contParam[feature][attack].getLeft();
-                            double stddev=contParam[feature][attack].getRight();
                             double x = parseDouble(datum[contFeatures[feature]]);
-                                ProbAttacks[attack] = ProbAttacks[attack] * exp(-0.5*pow((x-mean)/stddev,2))/(stddev*sqrt(2*pi));
+                                ProbAttacks[attack] = ProbAttacks[attack] + log(contParam[feature][attack].getProb(x));
                         }
 
                     }
-                    int smallest = 1;
+                    int greatest = 1;
                     for (int i = 1; i < 10; i++) {
-                        if(ProbAttacks[i]<ProbAttacks[smallest]){
-                            smallest=i;
+                        if(ProbAttacks[i]<ProbAttacks[greatest]){
+                            greatest=i;
                         }
                     }
-                    results[1].add(attacks[smallest]);
+                    results[1].add(attacks[greatest]);
 
                 }
             }
