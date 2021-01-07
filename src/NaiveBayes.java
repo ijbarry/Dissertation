@@ -1,7 +1,6 @@
 
 import java.awt.image.Kernel;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -63,29 +62,52 @@ public class NaiveBayes {
         double fullywrong = 0.0;
         double partialcorrect =0.0;
         double partialwrong = 0.0;
-        for (int i =0;i<results[1].size();i++) {
-            if(results[0].get(i).equals(results[1].get(i))){
-                fullycorrect=fullycorrect+1.0;
+
+        double truePos=0.0;
+        double falsePos=0.0;
+        double trueNeg=0.0;
+        double falseNeg=0.0;
+        try {
+            PrintStream fileWriter = new PrintStream(new File("KDE_Results.csv"));
+            for (int i = 0; i < results[1].size(); i++) {
+                fileWriter.println(results[0].get(i)+","+results[1].get(i));
+                if (results[0].get(i).equals(results[1].get(i))) {
+                    fullycorrect = fullycorrect + 1.0;
+                } else {
+                    fullywrong = fullywrong + 1.0;
+                }
+                /*if (results[0].get(i).equals("Normal") && results[1].get(i).equals("Normal") || !results[0].get(i).equals("Normal") && !results[1].get(i).equals("Normal")) {
+                    partialcorrect = partialcorrect + 1.0;
+                } else {
+                    partialwrong = partialwrong + 1.0;
+                }*/
+                if(results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
+                    trueNeg+=1.0;
+                }
+                else if(results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
+                    falseNeg+=1.0;
+                }
+                else if(!results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
+                    truePos+=1.0;
+                }
+                else if(!results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
+                    falsePos+=1.0;
+                }
             }
-            else {
-                fullywrong=fullywrong+1.0;
-            }
-            if(results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")||!results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
-                partialcorrect=partialcorrect+1.0;
-            }
-            else {
-                partialwrong=partialwrong+1.0;
-            }
+        }
+        catch (IOException e){
+            System.out.println("IOException.");
+            e.printStackTrace();
         }
         System.out.println("correct type:"+fullycorrect);
         System.out.println("wrong type:"+fullywrong);
         double fullaccuracy= fullycorrect/(fullycorrect+fullywrong);
         System.out.println("typing accuracy:"+fullaccuracy);
 
-        System.out.println("correct attack identification:"+partialcorrect);
-        System.out.println("wrong  attack identification:"+partialwrong);
-        double partialaccuracy= partialcorrect/(partialcorrect+partialwrong);
-        System.out.println("typing accuracy:"+partialaccuracy);
+        System.out.println("False Positive:"+falsePos);
+        System.out.println("True Positive:"+truePos);
+        System.out.println("False Negative:"+falseNeg);
+        System.out.println("True Negative:"+trueNeg);
 
 
     }
