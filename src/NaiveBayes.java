@@ -157,6 +157,12 @@ public class NaiveBayes {
 
                 }
             }
+
+            for (int i=0;i<13;i++){
+                for (int j=0;j<10;j++){
+                    KernelDensityProb[i][j].sort();
+                }
+            }
         }
         catch (FileNotFoundException e){
             System.out.println("FileNotFoundException.");
@@ -194,23 +200,23 @@ public class NaiveBayes {
                     //discrete features
                     for (int feature = 0; feature < 4; feature++) {
                         if (discParam[1][attack].containsKey(datum[discFeatures[feature]])) {
-                            ProbAttacks[attack] = ProbAttacks[attack] + log(discParam[1][attack].get(datum[discFeatures[feature]]));
+                            ProbAttacks[attack] += log(discParam[1][attack].get(datum[discFeatures[feature]]));
                         }
                         else {
-                            ProbAttacks[attack] = ProbAttacks[attack] + log(discParam[1][attack].get("smallest"));
+                            ProbAttacks[attack] += log(discParam[1][attack].get("smallest"));
                         }
                     }
 
                     //continous features
                     for (int feature = 0; feature < 12; feature++) {
                         double x = parseDouble(datum[contFeatures[feature]]);
-                        ProbAttacks[attack] = ProbAttacks[attack] + log(contParam[feature][attack].getProb(x));
+                        ProbAttacks[attack] += log(contParam[feature][attack].getProb(x));
                     }
 
                 }
                 int greatest = 1;
                 for (int i = 1; i < 10; i++) {
-                    if(ProbAttacks[i]<ProbAttacks[greatest]){
+                    if(ProbAttacks[i]>ProbAttacks[greatest]){
                         greatest=i;
                     }
                 }
