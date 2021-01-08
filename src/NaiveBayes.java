@@ -182,7 +182,7 @@ public class NaiveBayes {
 
             for (int i=0;i<13;i++){
                 for (int j=0;j<10;j++){
-                    KernelDensityProb[i][j].sort();
+                    KernelDensityProb[i][j].silvermanBandwidth();
                 }
             }
         }
