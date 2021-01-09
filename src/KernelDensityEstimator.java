@@ -24,37 +24,6 @@ public class KernelDensityEstimator {
         listSum += value;
     }
 
-    public void sort(){
-        dataSort=new double[listSize];
-        for (int i = 0; i < listSize; i++) {
-            dataSort[i]=data.get(i).doubleValue();
-        }
-        Arrays.sort(dataSort);
-    }
-
-    public void silvermanBandwidth() {
-        sort();
-        double stdDev=0.0;
-        double lowerQuartile = Math.floor(listSize/4);
-        double upperQuartile = Math.floor(3*listSize/4);
-        double IQR=0.0;
-        for(int i=0;i<listSize;i++){
-            Double diff = dataSort[i]- listSum/listSize;
-            stdDev += diff * diff;
-            if(i==lowerQuartile){
-                IQR-=lowerQuartile;
-            }
-            else if(i==upperQuartile){
-                IQR+=upperQuartile;
-            }
-        }
-        stdDev=sqrt(stdDev/listSize);
-        IQR=IQR/1.34;
-        double A= min(max(1.0,IQR),stdDev);
-        bandwidth=1.06*A/(pow(listSize,0.2));
-    }
-
-
 
 
    public double getProb(double x){
