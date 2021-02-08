@@ -68,7 +68,7 @@ public class HMM {
         double trueNeg=0.0;
         double falseNeg=0.0;
         try {
-            PrintStream fileWriter = new PrintStream(new File("KDE_Results.csv"));
+            PrintStream fileWriter = new PrintStream(new File("HMM_Results.csv"));
             for (int i = 0; i < results[1].size(); i++) {
                 fileWriter.println(results[0].get(i)+","+results[1].get(i));
                 if (results[0].get(i).equals(results[1].get(i))) {
@@ -76,11 +76,11 @@ public class HMM {
                 } else {
                     fullywrong = fullywrong + 1.0;
                 }
-                /*if (results[0].get(i).equals("Normal") && results[1].get(i).equals("Normal") || !results[0].get(i).equals("Normal") && !results[1].get(i).equals("Normal")) {
+                if (results[0].get(i).equals("Normal") && results[1].get(i).equals("Normal") || !results[0].get(i).equals("Normal") && !results[1].get(i).equals("Normal")) {
                     partialcorrect = partialcorrect + 1.0;
                 } else {
                     partialwrong = partialwrong + 1.0;
-                }*/
+                }
                 if(results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
                     trueNeg+=1.0;
                 }
@@ -104,11 +104,26 @@ public class HMM {
         double fullaccuracy= fullycorrect/(fullycorrect+fullywrong);
         System.out.println("typing accuracy:"+fullaccuracy);
 
+        System.out.println("overall type correct:"+fullycorrect);
+        System.out.println("overall type incorrect:"+fullywrong);
+        double overallaccuracy= partialcorrect/(partialcorrect+partialwrong);
+        System.out.println("typing accuracy:"+fullaccuracy);
+
         System.out.println("False Positive:"+falsePos);
         System.out.println("True Positive:"+truePos);
         System.out.println("False Negative:"+falseNeg);
         System.out.println("True Negative:"+trueNeg);
 
+   /*     double[][] tp = TransitionProbs();
+
+        for(double[] row : tp) {
+            for (double i : row) {
+                System.out.print(i);
+                System.out.print("\t");
+            }
+            System.out.println();
+        }
+        */
 
     }
 
@@ -119,8 +134,8 @@ public class HMM {
         Scanner scanner=null;
         double AttackCount[]=new double[11];
         double[][] TransitionCount=new double[11][11];
-        for (int i = 0; i <12 ; i++) { //add-one-smoothed
-            for (int j = 0; j <12 ; j++) {
+        for (int i = 0; i <11 ; i++) { //add-one-smoothed
+            for (int j = 0; j <11 ; j++) {
                 TransitionCount[i][j]=1.0;
             }
             AttackCount[i]=1.0;
@@ -130,7 +145,7 @@ public class HMM {
             scanner = new Scanner(trainingSet);
             scanner.nextLine();
             int current = -1;
-            int prev =11; //start case
+            int prev =10; //start case
             while (scanner.hasNextLine()) {
                 String data = scanner.nextLine();
                 String[] datum = data.split(",");
@@ -170,9 +185,12 @@ public class HMM {
                 TransitionCount[prev][current] += 1.0;
                 prev = current;
             }
-            TransitionCount[current][11] += 1.0; //end case
+            TransitionCount[current][10] += 1.0; //end case
 
             for (int i = 0; i < 11 ; i++) {
+                for (int j = 0; j < 10 ; j++) {
+                    AttackCount[i] += TransitionCount[i][j];
+                }
                 for (int j = 0; j < 11 ; j++) {
                     TransitionCount[i][j] = TransitionCount[i][j]/AttackCount[i];
                 }
@@ -262,7 +280,7 @@ public class HMM {
         Scanner scanner=null;
         double attackSum =0.0;
 
-        int prev =11; //start case
+        int prev =10; //start case
 
         for (double count:attackCount) {
             attackSum += count;
@@ -300,9 +318,12 @@ public class HMM {
 
                 }
                 int greatest = 1;
+                double probOfGreatest = ProbAttacks[greatest]*transitionProbs[prev][greatest];
                 for (int i = 1; i < 10; i++) {
-                    if(ProbAttacks[i]*transitionProbs[prev][i]>ProbAttacks[greatest]*transitionProbs[prev][i]){
+                    double probOfattack = ProbAttacks[i]*transitionProbs[prev][i];
+                    if(probOfattack>probOfGreatest){
                         greatest=i;
+                        probOfGreatest = ProbAttacks[greatest]*transitionProbs[prev][greatest];
                     }
                 }
                 results[1].add(attacks[greatest]);
