@@ -53,6 +53,9 @@ public class NaiveBayes {
     private static double[] attackCount= new double[]{1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
 
     public static void main(String[] args) {
+
+        int actual =0;
+        int predicted = 1;
        Hashtable<String,Double>[][] discParam = DiscreteParameters(); //proto,service,state,ct_state_ttl
         KernelDensityEstimator[][] contParam = KDE();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
         //ct_srv_dst, trans_depth, attack_cat
@@ -71,7 +74,7 @@ public class NaiveBayes {
             PrintStream fileWriter = new PrintStream(new File("KDE_Results.csv"));
             for (int i = 0; i < results[1].size(); i++) {
                 fileWriter.println(results[0].get(i)+","+results[1].get(i));
-                if (results[0].get(i).equals(results[1].get(i))) {
+                if (results[actual].get(i).equals(results[predicted].get(i))) {
                     fullycorrect = fullycorrect + 1.0;
                 } else {
                     fullywrong = fullywrong + 1.0;
@@ -81,17 +84,17 @@ public class NaiveBayes {
                 } else {
                     partialwrong = partialwrong + 1.0;
                 }*/
-                if(results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
+                if(results[actual].get(i).equals("Normal")&&results[predicted].get(i).equals("Normal")){
                     trueNeg+=1.0;
                 }
-                else if(results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
-                    falseNeg+=1.0;
+                else if(results[actual].get(i).equals("Normal")&&!results[predicted].get(i).equals("Normal")){
+                    falsePos+=1.0;
                 }
-                else if(!results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
+                else if(!results[actual].get(i).equals("Normal")&&!results[predicted].get(i).equals("Normal")){
                     truePos+=1.0;
                 }
-                else if(!results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
-                    falsePos+=1.0;
+                else if(!results[actual].get(i).equals("Normal")&&results[predicted].get(i).equals("Normal")){
+                    falseNeg+=1.0;
                 }
             }
         }
@@ -201,6 +204,8 @@ public class NaiveBayes {
                 }
                 String data = scanner.nextLine();
                 String[] datum = data.split(",");
+
+
                 results[0].add(datum[attack_cat]);
 
                 for (int attack = 0; attack < 10; attack++) {
