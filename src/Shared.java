@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Shared {
-    static File trainingSet = new File("reduced_training-set.csv");
-    static File testingSet = new File("reduced_testing-set.csv");
+    private static File trainingSet = new File("reduced_training-set.csv");
+    private static File testingSet = new File("reduced_testing-set.csv");
 
     //discrete features
     private static int proto = 1;
@@ -96,42 +96,6 @@ public class Shared {
     public static int getWorms() {return worms; }
     public static int getNormal() {return normal; }
 
-/*    public static double[][] macroFeatures(File file,Integer size) throws FileNotFoundException {
-        Scanner scanner=null;
-        double Count=0;
-        List<Double>[] values=new List[size];
-        for (int i=0;i<size;i++){
-            values[i]= new ArrayList<Double>();
-        }
-        double[] averages = new double[size];
-        double[] stdDevs = new double[size];
-        scanner = new Scanner(file);
-        scanner.nextLine();
-        while (scanner.hasNextLine()) {
-            Count++;
-            String data = scanner.nextLine();
-            String[] datum = data.split(",");
-            for (int i=0;i<size;i++) {
-                Double add = Double.parseDouble(datum[i]);
-                if(add.isNaN()){
-                    add=0.0;
-                }
-                averages[i] += add;
-                values[i].add(add);
-            }
-        }
-        for (int i=0;i<size;i++) {
-            averages[i] = averages[i]/Count;
-            for (int j=0; j< values[i].size();j++) {
-                stdDevs[i] += (values[i].get(j)-averages[i])*(values[i].get(j)-averages[i]);
-            }
-            stdDevs[i] = Math.sqrt(stdDevs[i]/Count);
-        }
-
-        scanner.close();
-        return new double[][]{averages,stdDevs};
-    }
-*/
 
 public static int whichAttack(String[] datum){
     int update=0;

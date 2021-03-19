@@ -6,8 +6,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Table {
+    //continous features
+    private static int dur=0;
+    private static int dpkts=4;
+    private static int sbytes=5;
+    private static int dttl=5;
+    private static int sjit=7;
+    private static int ackdat=8;
+    private static int smean=9;
+    private static int dmean=10;
+    private static int ct_dst_src_ltm=12;
+    private static int ct_flw_http_mthd=13;
+    private static int ct_srv_dst=14;
+    private static int	trans_depth=15;
+    private static int[] contFeatures= new int[]{dur,dpkts,sbytes,dttl,sjit,ackdat,smean,dmean,ct_dst_src_ltm,ct_flw_http_mthd,ct_srv_dst,trans_depth};
 
-    public static void main(String[] args) {
+     public static void main2(String[] args) {
 
         int actual =0;
         int predicted = 1;
@@ -22,7 +36,7 @@ public class Table {
         double falseNeg=0.0;
         try {
             Scanner scanner=null;
-            File trainingSet = new File("HMM_Results.csv");
+            File trainingSet = new File("KDE_Results1.csv");
             scanner = new Scanner(trainingSet);
             scanner.nextLine();
             while (scanner.hasNextLine()) {
@@ -33,11 +47,7 @@ public class Table {
                 } else {
                     fullywrong = fullywrong + 1.0;
                 }
-                /*if (results[0].get(i).equals("Normal") && results[1].get(i).equals("Normal") || !results[0].get(i).equals("Normal") && !results[1].get(i).equals("Normal")) {
-                    partialcorrect = partialcorrect + 1.0;
-                } else {
-                    partialwrong = partialwrong + 1.0;
-                }*/
+
                 if(results[actual].equals("Normal")&&results[predicted].equals("Normal")){
                     trueNeg+=1.0;
                 }
@@ -68,4 +78,5 @@ public class Table {
 
 
     }
+
 }
