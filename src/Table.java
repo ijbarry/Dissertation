@@ -21,7 +21,7 @@ public class Table {
     private static int	trans_depth=15;
     private static int[] contFeatures= new int[]{dur,dpkts,sbytes,dttl,sjit,ackdat,smean,dmean,ct_dst_src_ltm,ct_flw_http_mthd,ct_srv_dst,trans_depth};
 
-     public static void main2(String[] args) {
+     public static void main(String[] args) {
 
         int actual =0;
         int predicted = 1;
@@ -36,28 +36,28 @@ public class Table {
         double falseNeg=0.0;
         try {
             Scanner scanner=null;
-            File trainingSet = new File("KDE_Results1.csv");
-            scanner = new Scanner(trainingSet);
+            File results = new File("Results/NB_Gaussian_Results.csv");
+            scanner = new Scanner(results);
             scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String data = scanner.nextLine();
-                String[] results = data.split(",");
-                if (results[actual].equals(results[predicted])) {
+                String[] result = data.split(",");
+                if (result[actual].equals(result[predicted])) {
                     fullycorrect = fullycorrect + 1.0;
                 } else {
                     fullywrong = fullywrong + 1.0;
                 }
 
-                if(results[actual].equals("Normal")&&results[predicted].equals("Normal")){
+                if(result[actual].equals("Normal")&&result[predicted].equals("Normal")){
                     trueNeg+=1.0;
                 }
-                else if(results[actual].equals("Normal")&&!results[predicted].equals("Normal")){
+                else if(result[actual].equals("Normal")&&!result[predicted].equals("Normal")){
                     falsePos+=1.0;
                 }
-                else if(!results[actual].equals("Normal")&&!results[predicted].equals("Normal")){
+                else if(!result[actual].equals("Normal")&&!result[predicted].equals("Normal")){
                     truePos+=1.0;
                 }
-                else if(!results[actual].equals("Normal")&&results[predicted].equals("Normal")){
+                else if(!result[actual].equals("Normal")&&result[predicted].equals("Normal")){
                     falseNeg+=1.0;
                 }
             }
@@ -75,6 +75,44 @@ public class Table {
         System.out.println("True Positive:"+truePos);
         System.out.println("False Negative:"+falseNeg);
         System.out.println("True Negative:"+trueNeg);
+
+
+    }
+
+    public static void main1(String[] args) {
+        int[] Count = new int[10];
+        int[] CountP = new int[10];
+
+        int actual = 0;
+        int predicted = 1;
+        try {
+            Scanner scanner=null;
+            File trainingSet = new File("reduced_training-set.csv");
+            scanner = new Scanner(trainingSet);
+            scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                String data = scanner.nextLine();
+                String[] results = data.split(",");
+                Count[Shared.whichAttack(results[Shared.getAttack_cat()])]++;
+                //CountP[Shared.whichAttack(results[predicted])]++;
+            }
+            System.out.println("Analysis Actual:"+Count[0]+", Analysis Predicted:"+CountP[0]);
+            System.out.println("Backdoor:"+Count[1]+", Backdoor Predicted:"+CountP[1]);
+            System.out.println("DoS:"+Count[2]+" ,DoS Predicted:"+CountP[2]);
+            System.out.println("Exploits:"+Count[3]+", Exploits Predicted:"+CountP[3]);
+            System.out.println("Fuzzers:"+Count[4]+", Fuzzers Predicted:"+CountP[4]);
+            System.out.println("Generic:"+Count[5]+", Generic Predicted:"+CountP[5]);
+            System.out.println("Reconnaissance:"+Count[6]+", Reconnaissance Predicted:"+CountP[6]);
+            System.out.println("Shellcode:"+Count[7]+", Shellcode Predicted:"+CountP[7]);
+            System.out.println("Worms:"+Count[8]+", Worms Predicted:"+CountP[8]);
+            System.out.println("Normal:"+Count[9]+", Normal Predicted:"+CountP[9]);
+
+        }
+        catch (IOException e){
+            System.out.println("IOException.");
+            e.printStackTrace();
+        }
+
 
 
     }

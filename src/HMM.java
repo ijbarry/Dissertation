@@ -29,7 +29,7 @@ public class HMM {
             //ct_srv_dst, trans_depth, attack_cat
 
             List<String>[] results = HMMResults(discParam,contParam);
-            PrintStream fileWriter = new PrintStream(new File("HMM_Results.csv"));
+            PrintStream fileWriter = new PrintStream(new File("Results/HMM_Results.csv"));
             for (int i = 0; i < results[1].size(); i++) {
                 fileWriter.println(results[0].get(i)+","+results[1].get(i));
                 if (results[0].get(i).equals(results[1].get(i))) {
@@ -108,7 +108,7 @@ public class HMM {
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             String[] datum = data.split(",");
-            current = Shared.whichAttack(datum);
+            current = Shared.whichAttack(datum[Shared.getAttack_cat()]);
             AttackCount[current] +=1.0;
             TransitionCount[prev][current] += 1.0;
             prev = current;
@@ -145,6 +145,8 @@ public class HMM {
                 double[] ProbAttacks = new double[10];
                 for (int i = 0; i < 10; i++) {
                     ProbAttacks[i]=log(attackCount[i]/attackSum);
+                    ProbAttacks[i]=0;
+
                 }
                 String data = scanner.nextLine();
                 String[] datum = data.split(",");

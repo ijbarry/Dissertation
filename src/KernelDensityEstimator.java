@@ -7,12 +7,12 @@ import static java.lang.Math.*;
 
 public class KernelDensityEstimator {
     private List<Double> data;
-    private double[] data1;
+    private double[] dataSort;
     private int listSize = 0;
     private double listSum = 0;
     private boolean init = true;
 
-    private double bandwidth = 3;
+    private double bandwidth = 1;
     private static double pi = 3.14159265359;
 
     public KernelDensityEstimator() {
@@ -25,27 +25,37 @@ public class KernelDensityEstimator {
         listSum += value;
     }
 
+    public void silvermanBandwidth() {
+        sort();
+        double stdDev=0.0;
+        double lowerQuartile = Math.floor(listSize/4);
+        double upperQuartile = Math.floor(3*listSize/4);
+        double IQR=0.0;
+        for(int i=0;i<listSize;i++){
+            Double diff = dataSort[i]- listSum/listSize;
+            stdDev += diff * diff;
+            if(i==lowerQuartile){
+                IQR-=lowerQuartile;
+            }
+            else if(i==upperQuartile){
+                IQR+=upperQuartile;
+            }
+        }
+        stdDev=sqrt(stdDev/listSize);
+        IQR=IQR/1.34;
+        double A= min(max(1.0,IQR),stdDev);
+        bandwidth=1.06*A/(pow(listSize,0.2));
+    }
+
     public void sort() {
         data.sort(Comparator.naturalOrder());
-        data1=new double[listSize];
+        dataSort=new double[listSize];
         for (int i=0;i<listSize;i++) {
-            data1[i]=data.get(i).doubleValue();
+            dataSort[i]=data.get(i).doubleValue();
         }
     }
 
-/*    public double getProb(double x) {
-        // to optimize the computation, we find all sample values which have positive weights
-        int from = Arrays.binarySearch(data1, (x - 4 * bandwidth));
-        if (from < 0) from = -from - 1;
-        int to = Arrays.binarySearch(data1, (x + 4 * bandwidth));
-        if (to < 0) to = -to - 1;
-        double prob = 0;
-        for (int x_i = from; x_i < to; x_i++) {
-            prob += exp(-0.5 * pow((x - x_i) / bandwidth, 2));// (e^(((x-xi)/bandwidth)^2))/(n*bandwidth*sqrt(2pi))
-        }
-        return prob / (listSize * bandwidth);
-    }
-    */
+
 
 
 

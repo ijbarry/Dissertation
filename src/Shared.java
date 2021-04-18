@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Shared {
-    private static File trainingSet = new File("reduced_training-set.csv");
-    private static File testingSet = new File("reduced_testing-set.csv");
+    private static File trainingSet = new File("Dataset/reduced_training-set.csv");
+    private static File testingSet = new File("Dataset/reduced_testing-set.csv");
 
     //discrete features
     private static int proto = 1;
@@ -21,7 +21,7 @@ public class Shared {
     private static int dur=0;
     private static int dpkts=4;
     private static int sbytes=5;
-    private static int dttl=5;
+    private static int dttl=6;
     private static int sjit=7;
     private static int ackdat=8;
     private static int smean=9;
@@ -97,38 +97,38 @@ public class Shared {
     public static int getNormal() {return normal; }
 
 
-public static int whichAttack(String[] datum){
+public static int whichAttack(String data){
     int update=0;
-    switch (datum[Shared.getAttack_cat()]){
+    switch (data){
         case "Analysis":
-            update= Shared.getAnalysis();
+            update= analysis;
             break;
         case "Backdoor":
-            update= Shared.getBackdoor();
+            update= backdoor;
             break;
         case "DoS":
-            update= Shared.getDos();
+            update= dos;
             break;
         case "Exploits":
-            update= Shared.getExploits();
+            update= exploits;
             break;
         case "Fuzzers":
-            update= Shared.getFuzzers();
+            update= fuzzers;
             break;
         case "Generic":
-            update= Shared.getNormal();
+            update= generic;
             break;
         case "Reconnaissance":
-            update= Shared.getReconnaissance();
+            update= reconnaissance;
             break;
         case "Shellcode":
-            update= Shared.getShellcode();
+            update= shellcode;
             break;
         case "Worms":
-            update= Shared.getWorms();
+            update= worms;
             break;
         default:
-            update= Shared.getNormal();
+            update= normal;
             break;
     }
     return update;
