@@ -21,7 +21,7 @@ public class Table {
     private static int	trans_depth=15;
     private static int[] contFeatures= new int[]{dur,dpkts,sbytes,dttl,sjit,ackdat,smean,dmean,ct_dst_src_ltm,ct_flw_http_mthd,ct_srv_dst,trans_depth};
 
-     public static void main(String[] args) {
+     public static void main2(String[] args) {
 
         int actual =0;
         int predicted = 1;

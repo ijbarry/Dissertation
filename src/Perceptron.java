@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Perceptron {
-    private static double grad =1;
+    private static double grad =0.001;
     static File trainingSet = new File("Dataset/scaled_one_hot_training-set.csv");
     static File testingSet = new File("Dataset/scaled_one_hot_testing-set.csv");
 
@@ -152,5 +152,4 @@ public class Perceptron {
             return 1.0;
         }
     }
-
 }

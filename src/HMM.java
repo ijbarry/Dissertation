@@ -29,7 +29,7 @@ public class HMM {
             //ct_srv_dst, trans_depth, attack_cat
 
             List<String>[] results = HMMResults(discParam,contParam);
-            PrintStream fileWriter = new PrintStream(new File("Results/HMM_Results.csv"));
+            PrintStream fileWriter = new PrintStream(new File("Results/HMM_KDE_Results.csv"));
             for (int i = 0; i < results[1].size(); i++) {
                 fileWriter.println(results[0].get(i)+","+results[1].get(i));
                 if (results[0].get(i).equals(results[1].get(i))) {
@@ -100,7 +100,7 @@ public class HMM {
             }
             AttackCount[i]=1.0;
         }
-        File trainingSet = new File("reduced_training-set.csv");
+        File trainingSet = new File("Dataset/reduced_training-set.csv");
         scanner = new Scanner(trainingSet);
         scanner.nextLine();
         int current = -1;

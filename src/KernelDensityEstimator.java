@@ -12,7 +12,6 @@ public class KernelDensityEstimator {
     private double listSum = 0;
     private boolean init = true;
 
-    private double bandwidth = 1;
     private static double pi = 3.14159265359;
 
     public KernelDensityEstimator() {
@@ -24,7 +23,7 @@ public class KernelDensityEstimator {
         listSize++;
         listSum += value;
     }
-
+    private double bandwidth = 0.75;
     public void silvermanBandwidth() {
         sort();
         double stdDev=0.0;
