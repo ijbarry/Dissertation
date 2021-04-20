@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.lang.Math.*;
 
-public class KernelDensityEstimator implements Estimator{
+public class KernelDensityEstimator extends Estimator{
     private List<Double> data;
     private double[] dataSort;
     private int listSize = 0;
@@ -54,11 +54,7 @@ public class KernelDensityEstimator implements Estimator{
         }
     }
 
-
-
-
-
-
+    @Override
     public double getProb(double x){
         double prob=0.0;
 

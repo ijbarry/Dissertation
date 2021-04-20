@@ -10,7 +10,7 @@ import java.util.Scanner;
 import static java.lang.Double.parseDouble;
 import static java.lang.Math.log;
 
-public class HMM_Gaussian implements HMM{
+public class HMM_Gaussian extends HMM{
 
     public static void main(String[] args) {
         try {
@@ -25,7 +25,6 @@ public class HMM_Gaussian implements HMM{
             System.out.println("IOException.");
             e.printStackTrace();
         }
-
 
     }
 }

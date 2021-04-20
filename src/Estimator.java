@@ -1,5 +1,3 @@
-public interface Estimator {
-    default double getProb(double x) {
-        return 0;
-    }
+public abstract class Estimator {
+    abstract double getProb(double x);
 }

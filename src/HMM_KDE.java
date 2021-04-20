@@ -10,7 +10,7 @@ import java.util.Scanner;
 import static java.lang.Double.parseDouble;
 import static java.lang.Math.log;
 
-public class HMM_KDE implements HMM{
+public class HMM_KDE extends HMM{
 
     public static void main(String[] args) {
         try {

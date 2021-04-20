@@ -8,17 +8,17 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Math.*;
 
 
-public class NaiveBayes_KDE {
+public class NaiveBayes_KDE extends NaiveBayes {
 
     private static double[] attackCount = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 
     public static void main(String[] args) {
         try {
-            Hashtable<String,Double>[][] discParam = NaiveBayes.DiscreteParameters(); //proto,service,state,ct_state_ttl
+            Hashtable<String,Double>[][] discParam = DiscreteParameters(); //proto,service,state,ct_state_ttl
             KernelDensityEstimator[][] contParam = KernelDensityProb();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
             //ct_srv_dst, trans_depth, attack_cat
 
-            List<String>[] results = NaiveBayes.NBResults(discParam,contParam);
+            List<String>[] results = NBResults(discParam,contParam);
             NaiveBayes.WriteResults(results,"Gaussian");
         }
         catch (IOException e){

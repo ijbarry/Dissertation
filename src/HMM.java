@@ -9,7 +9,7 @@ import java.util.Scanner;
 import static java.lang.Double.parseDouble;
 import static java.lang.Math.log;
 
-public interface HMM {
+public class HMM {
     static double[] attackCount = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
     //First-order HMM
     static double[][] TransitionProbs() throws FileNotFoundException {

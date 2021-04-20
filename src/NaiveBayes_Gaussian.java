@@ -10,7 +10,7 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Math.log;
 import static java.lang.Math.sqrt;
 
-public class NaiveBayes_Gaussian {
+public class NaiveBayes_Gaussian extends NaiveBayes{
     public static void main(String[] args) {
         try {
             Hashtable<String,Double>[][] discParam = NaiveBayes.DiscreteParameters(); //proto,service,state,ct_state_ttl

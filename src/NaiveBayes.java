@@ -8,7 +8,7 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Math.*;
 
 
-public interface NaiveBayes {
+public class NaiveBayes {
     static void WriteResults(List<String>[] results, String type) throws FileNotFoundException{
         double fullycorrect =0.0;
         double fullywrong = 0.0;
