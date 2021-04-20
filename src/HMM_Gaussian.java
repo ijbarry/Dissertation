@@ -15,7 +15,7 @@ public class HMM_Gaussian implements HMM{
     public static void main(String[] args) {
         try {
             Hashtable<String,Double>[][] discParam = NaiveBayes.DiscreteParameters(); //proto,service,state,ct_state_ttl
-            Gaussian[][] contParam = NaiveBayes.GaussianProb();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
+            Gaussian[][] contParam = NaiveBayes_Gaussian.GaussianProb();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
             //ct_srv_dst, trans_depth, attack_cat
 
             List<String>[] results = HMM.HMMResults(discParam,contParam);
@@ -25,6 +25,7 @@ public class HMM_Gaussian implements HMM{
             System.out.println("IOException.");
             e.printStackTrace();
         }
+
 
     }
 }

@@ -22,8 +22,7 @@ public interface HMM {
             }
             AttackCount[i]=1.0;
         }
-        File trainingSet = new File("Dataset/reduced_training-set.csv");
-        scanner = new Scanner(trainingSet);
+        scanner = new Scanner(Shared.getTrainingSet());
         scanner.nextLine();
         int current = -1;
         int prev =10; //start case
@@ -94,7 +93,7 @@ public interface HMM {
             double probOfGreatest = ProbAttacks[greatest]*transitionProbs[prev][greatest];
             for (int i = 1; i < 10; i++) {
                 double probOfattack = ProbAttacks[i]*transitionProbs[prev][i];
-                if(probOfattack>probOfGreatest){
+                if(probOfattack<probOfGreatest){
                     greatest=i;
                     probOfGreatest = ProbAttacks[greatest]*transitionProbs[prev][greatest];
                 }
@@ -122,12 +121,12 @@ public interface HMM {
         PrintStream fileWriter;
         switch (type) {
             case ("Gaussian"):
-                fileWriter = new PrintStream(new File("HMM_Gaussian_Results.csv"));
+                fileWriter = new PrintStream(new File("Results/HMM_Gaussian_Results.csv"));
                 break;
             case ("KDE"):
-                fileWriter = new PrintStream(new File("HMM_KDE_Results.csv"));
+                fileWriter = new PrintStream(new File("Results/HMM_KDE_Results.csv"));
             default:
-                fileWriter = new PrintStream(new File("HMM_New_Model_Results.csv"));
+                fileWriter = new PrintStream(new File("Results/HMM_NewEstimator_Results.csv"));
         }
 
         for (int i = 0; i < results[1].size(); i++) {
@@ -155,6 +154,15 @@ public interface HMM {
                 falseNeg+=1.0;
             }
         }
+        System.out.println("correct type:"+fullycorrect);
+        System.out.println("wrong type:"+fullywrong);
+        double fullaccuracy= fullycorrect/(fullycorrect+fullywrong);
+        System.out.println("typing accuracy:"+fullaccuracy);
+
+        System.out.println("False Positive:"+falsePos);
+        System.out.println("True Positive:"+truePos);
+        System.out.println("False Negative:"+falseNeg);
+        System.out.println("True Negative:"+trueNeg);
     }
 }
 
