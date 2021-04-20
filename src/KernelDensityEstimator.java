@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.lang.Math.*;
 
-public class KernelDensityEstimator {
+public class KernelDensityEstimator implements Estimator{
     private List<Double> data;
     private double[] dataSort;
     private int listSize = 0;

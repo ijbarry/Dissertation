@@ -1,6 +1,6 @@
 import static java.lang.Math.*;
 
-public class Gaussian {
+public class Gaussian implements Estimator{
     private double mean;
     private double stdDev;
     private static final double pi = 3.14159265359;
