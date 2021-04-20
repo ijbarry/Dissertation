@@ -23,7 +23,7 @@ public class KernelDensityEstimator {
         listSize++;
         listSum += value;
     }
-    private double bandwidth = 0.75;
+    private double bandwidth = 0.5;
     public void silvermanBandwidth() {
         sort();
         double stdDev=0.0;

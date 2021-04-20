@@ -10,7 +10,6 @@ import static java.lang.Math.*;
 
 public class NaiveBayes {
 
-
     private static double[] attackCount= new double[]{1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
 
     public static void main(String[] args) {
@@ -23,12 +22,14 @@ public class NaiveBayes {
         double falsePos=0.0;
         double trueNeg=0.0;
         double falseNeg=0.0;
+        int actual = 0;
+        int predicted = 1;
         try {
             Hashtable<String,Double>[][] discParam = DiscreteParameters(); //proto,service,state,ct_state_ttl
             KernelDensityEstimator[][] contParam = KernelDensityProb();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
             //ct_srv_dst, trans_depth, attack_cat
             List<String>[] results = KDE(discParam,contParam);
-            PrintStream fileWriter = new PrintStream(new File("Results/NB_KDE1_Results.csv"));
+            PrintStream fileWriter = new PrintStream(new File("NB_KDE_Results.csv"));
             for (int i = 0; i < results[1].size(); i++) {
                 fileWriter.println(results[0].get(i)+","+results[1].get(i));
                 if (results[0].get(i).equals(results[1].get(i))) {
@@ -41,8 +42,6 @@ public class NaiveBayes {
                 } else {
                     partialwrong = partialwrong + 1.0;
                 }*/
-                int actual = 0;
-                int predicted = 1;
                 if(results[actual].get(i).equals("Normal")&&results[predicted].get(i).equals("Normal")){
                     trueNeg+=1.0;
                 }
@@ -151,7 +150,6 @@ public class NaiveBayes {
                     greatest=i;
                 }
             }
-
             results[1].add(attacks[greatest]);
 
         }
@@ -217,7 +215,7 @@ public class NaiveBayes {
             }
         }
 
-        File trainingSet = new File("reduced_training-set.csv");
+        File trainingSet = new File("Dataset/reduced_training-set.csv");
         scanner = new Scanner(trainingSet);
         scanner.nextLine();
         while (scanner.hasNextLine()) {

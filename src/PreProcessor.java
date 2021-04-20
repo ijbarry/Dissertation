@@ -23,9 +23,9 @@ public class PreProcessor {
         int	trans_depth=29;
         int attack_cat=43;
         try {
-            File trainingSet = new File("Dataset/UNSW_NB15_training-set.csv");
-            File reducedTrainingSet = new File("Dataset/reduced_training-set.csv");
-            FileWriter fileWriter = new FileWriter("Dataset/reduced_training-set.csv");
+            File trainingSet = new File("Dataset/UNSW_NB15_testing-set.csv");
+            File reducedTrainingSet = new File("Dataset/reduced_testing-set.csv");
+            FileWriter fileWriter = new FileWriter("Dataset/reduced_testing-set.csv");
             BufferedWriter bw = new BufferedWriter(fileWriter);
             Scanner scanner = new Scanner(trainingSet);
             while (scanner.hasNextLine()) {
