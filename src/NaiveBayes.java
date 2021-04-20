@@ -22,21 +22,14 @@ public class NaiveBayes {
         double falsePos=0.0;
         double trueNeg=0.0;
         double falseNeg=0.0;
-<<<<<<< HEAD
         int actual = 0;
         int predicted = 1;
-=======
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         try {
             Hashtable<String,Double>[][] discParam = DiscreteParameters(); //proto,service,state,ct_state_ttl
             KernelDensityEstimator[][] contParam = KernelDensityProb();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
             //ct_srv_dst, trans_depth, attack_cat
             List<String>[] results = KDE(discParam,contParam);
-<<<<<<< HEAD
             PrintStream fileWriter = new PrintStream(new File("NB_KDE_Results.csv"));
-=======
-            PrintStream fileWriter = new PrintStream(new File("KDE_Results1.csv"));
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
             for (int i = 0; i < results[1].size(); i++) {
                 fileWriter.println(results[0].get(i)+","+results[1].get(i));
                 if (results[0].get(i).equals(results[1].get(i))) {
@@ -49,7 +42,6 @@ public class NaiveBayes {
                 } else {
                     partialwrong = partialwrong + 1.0;
                 }*/
-<<<<<<< HEAD
                 if(results[actual].get(i).equals("Normal")&&results[predicted].get(i).equals("Normal")){
                     trueNeg+=1.0;
                 }
@@ -61,19 +53,6 @@ public class NaiveBayes {
                 }
                 else if(!results[actual].get(i).equals("Normal")&&results[predicted].get(i).equals("Normal")){
                     falseNeg+=1.0;
-=======
-                if(results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
-                    trueNeg+=1.0;
-                }
-                else if(results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
-                    falseNeg+=1.0;
-                }
-                else if(!results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
-                    truePos+=1.0;
-                }
-                else if(!results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
-                    falsePos+=1.0;
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
                 }
             }
         }
@@ -94,11 +73,7 @@ public class NaiveBayes {
 
     }
 
-<<<<<<< HEAD
     protected static KernelDensityEstimator[][] KernelDensityProb() throws FileNotFoundException {
-=======
-    static KernelDensityEstimator[][] KernelDensityProb() throws FileNotFoundException {
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         Scanner scanner=null;
 
         int update= 0;
@@ -110,21 +85,13 @@ public class NaiveBayes {
             }
         }
 
-<<<<<<< HEAD
         File trainingSet = new File("Dataset/reduced_training-set.csv");
-=======
-        File trainingSet = new File("reduced_training-set.csv");
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         scanner = new Scanner(trainingSet);
         scanner.nextLine();
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             String[] datum = data.split(",");
-<<<<<<< HEAD
             update = Shared.whichAttack(datum[Shared.getAttack_cat()]);
-=======
-            update = Shared.whichAttack(datum);
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
             for (int i = 0; i < 12; i++) {
                 KernelDensityProb[i][update].add(parseDouble(datum[Shared.getContFeatures()[i]]));
             }
@@ -190,11 +157,7 @@ public class NaiveBayes {
         return results;
     }
 
-<<<<<<< HEAD
     protected static Hashtable<String,Double>[][] DiscreteParameters() throws FileNotFoundException {
-=======
-    static Hashtable<String,Double>[][] DiscreteParameters() throws FileNotFoundException {
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         int update= 0;
 
         Hashtable<String,Double>[][] featureCount = new Hashtable[4][10];
@@ -210,11 +173,7 @@ public class NaiveBayes {
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             String[] datum = data.split(",");
-<<<<<<< HEAD
             update = Shared.whichAttack(datum[Shared.getAttack_cat()]);
-=======
-            update = Shared.whichAttack(datum);
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
             attackCount[update]++;
             for (int i = 0; i < 4; i++) {
                 if(featureCount[i][update].containsKey(datum[Shared.getDiscFeatures()[i]])){
@@ -240,11 +199,7 @@ public class NaiveBayes {
         return featureCount;
     }
 
-<<<<<<< HEAD
     protected static Gaussian[][] GaussianProb() throws FileNotFoundException {
-=======
-    private static Gaussian[][] GaussianProb() throws FileNotFoundException {
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         int update= 0;
         Scanner scanner = null;
         List<Double>[][] splitCont = new List[13][10];
@@ -260,21 +215,13 @@ public class NaiveBayes {
             }
         }
 
-<<<<<<< HEAD
         File trainingSet = new File("Dataset/reduced_training-set.csv");
-=======
-        File trainingSet = new File("reduced_training-set.csv");
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         scanner = new Scanner(trainingSet);
         scanner.nextLine();
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             String[] datum = data.split(",");
-<<<<<<< HEAD
             update = Shared.whichAttack(datum[Shared.getAttack_cat()]);
-=======
-            update = Shared.whichAttack(datum);
->>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
             for (int i = 0; i < 12; i++) {
                 splitCont[i][update].add(parseDouble(datum[Shared.getContFeatures()[i]]));
                 contParam[i][update].addLeft(parseDouble(datum[Shared.getContFeatures()[i]]));
