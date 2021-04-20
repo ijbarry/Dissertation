@@ -21,7 +21,7 @@ public class Table {
     private static int	trans_depth=15;
     private static int[] contFeatures= new int[]{dur,dpkts,sbytes,dttl,sjit,ackdat,smean,dmean,ct_dst_src_ltm,ct_flw_http_mthd,ct_srv_dst,trans_depth};
 
-     public static void main2(String[] args) {
+     public static void main(String[] args) {
 
         int actual =0;
         int predicted = 1;
@@ -36,7 +36,7 @@ public class Table {
         double falseNeg=0.0;
         try {
             Scanner scanner=null;
-            File results = new File("Results/NB_Gaussian_Results.csv");
+            File results = new File("Results/Perceptron_Results.csv");
             scanner = new Scanner(results);
             scanner.nextLine();
             while (scanner.hasNextLine()) {
