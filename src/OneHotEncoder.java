@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class OneHotEncoder {
+<<<<<<< HEAD
     private static double[] averages;
     private static double[] stdDevs;
     public static void main(String[] args) {
@@ -10,6 +11,56 @@ public class OneHotEncoder {
             oneHotEncoder(train);
             scaling(train);
             write(train);
+=======
+
+    public static void main(String[] args) {
+        try {
+            Set<String>[] discVals = types();
+            File trainingSet = new File("reduced_training-set.csv");
+            File reducedTrainingSet = new File("one_hot_training-set.csv");
+            FileWriter fileWriter = new FileWriter("one_hot_training-set.csv");
+            BufferedWriter bw = new BufferedWriter(fileWriter);
+            Scanner scanner = new Scanner(trainingSet);
+                String d = scanner.nextLine();
+                String[] dt = d.split(",");
+                for (int i:Shared.getContFeatures()) {
+                    bw.write(dt[i]+",");
+                }
+                for (int i=0;i<Shared.getDiscFeatures().length;i++) {
+                    for (String val: discVals[i]) {
+                        bw.write(val+",");
+                    }
+                }
+                bw.write("Attack");
+                bw.newLine();
+                while (scanner.hasNextLine()) {
+                String data = scanner.nextLine();
+                String[] datum = data.split(",");
+                for (int i:Shared.getContFeatures()) {
+                    bw.write(datum[i]+",");
+                }
+                for (int i=0;i<Shared.getDiscFeatures().length;i++) {
+                    for (String val: discVals[i]) {
+                        if(val.equals(datum[Shared.getDiscFeatures()[i]])){
+                            bw.write("1,");
+                        }
+                        else {
+                            bw.write("0,");
+                        }
+                    }
+                }
+                if(datum[Shared.getAttack_cat()].equals("Normal")){
+                    bw.write("0");
+                }
+                else {
+                    bw.write("1");
+                }
+                bw.newLine();
+            }
+            scanner.close();
+            bw.flush();
+            bw.close();
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException.");
             e.printStackTrace();
@@ -19,6 +70,7 @@ public class OneHotEncoder {
         }
     }
 
+<<<<<<< HEAD
     private static void oneHotEncoder(boolean train)throws IOException{
         Set<String>[] discVals = types();
         File read = null;
@@ -78,6 +130,12 @@ public class OneHotEncoder {
     public static Set<String>[] types() throws FileNotFoundException {
         Set<String>[] discVals = new Set[Shared.getDiscFeatures().length];
             File trainingSet = new File("Dataset/reduced_training-set.csv");
+=======
+    //use trainingset for both
+    public static Set<String>[] types() throws FileNotFoundException {
+        Set<String>[] discVals = new Set[Shared.getDiscFeatures().length];
+            File trainingSet = new File("reduced_training-set.csv");
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
             Scanner scanner = new Scanner(trainingSet);
             for (int i = 0;i<Shared.getDiscFeatures().length;i++) {
                 discVals[i]=new TreeSet<>();
@@ -94,6 +152,7 @@ public class OneHotEncoder {
 
     }
 
+<<<<<<< HEAD
     private static void scaling(boolean train) throws IOException {
         File read = null;
         File write = null;
@@ -187,4 +246,7 @@ public class OneHotEncoder {
         bw.close();
     }
     }
+=======
+}
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
 

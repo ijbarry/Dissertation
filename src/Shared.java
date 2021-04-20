@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Shared {
+<<<<<<< HEAD
     private static File trainingSet = new File("Dataset/reduced_training-set.csv");
     private static File testingSet = new File("Dataset/reduced_testing-set.csv");
+=======
+    private static File trainingSet = new File("reduced_training-set.csv");
+    private static File testingSet = new File("reduced_testing-set.csv");
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
 
     //discrete features
     private static int proto = 1;
@@ -21,7 +26,11 @@ public class Shared {
     private static int dur=0;
     private static int dpkts=4;
     private static int sbytes=5;
+<<<<<<< HEAD
     private static int dttl=6;
+=======
+    private static int dttl=5;
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
     private static int sjit=7;
     private static int ackdat=8;
     private static int smean=9;
@@ -97,6 +106,7 @@ public class Shared {
     public static int getNormal() {return normal; }
 
 
+<<<<<<< HEAD
 public static int whichAttack(String data){
     int update=0;
     switch (data){
@@ -129,6 +139,40 @@ public static int whichAttack(String data){
             break;
         default:
             update= normal;
+=======
+public static int whichAttack(String[] datum){
+    int update=0;
+    switch (datum[Shared.getAttack_cat()]){
+        case "Analysis":
+            update= Shared.getAnalysis();
+            break;
+        case "Backdoor":
+            update= Shared.getBackdoor();
+            break;
+        case "DoS":
+            update= Shared.getDos();
+            break;
+        case "Exploits":
+            update= Shared.getExploits();
+            break;
+        case "Fuzzers":
+            update= Shared.getFuzzers();
+            break;
+        case "Generic":
+            update= Shared.getNormal();
+            break;
+        case "Reconnaissance":
+            update= Shared.getReconnaissance();
+            break;
+        case "Shellcode":
+            update= Shared.getShellcode();
+            break;
+        case "Worms":
+            update= Shared.getWorms();
+            break;
+        default:
+            update= Shared.getNormal();
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
             break;
     }
     return update;

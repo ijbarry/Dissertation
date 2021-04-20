@@ -21,7 +21,11 @@ public class Table {
     private static int	trans_depth=15;
     private static int[] contFeatures= new int[]{dur,dpkts,sbytes,dttl,sjit,ackdat,smean,dmean,ct_dst_src_ltm,ct_flw_http_mthd,ct_srv_dst,trans_depth};
 
+<<<<<<< HEAD
      public static void main(String[] args) {
+=======
+     public static void main2(String[] args) {
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
 
         int actual =0;
         int predicted = 1;
@@ -36,6 +40,7 @@ public class Table {
         double falseNeg=0.0;
         try {
             Scanner scanner=null;
+<<<<<<< HEAD
             File results = new File("Results/Perceptron_Results.csv");
             scanner = new Scanner(results);
             scanner.nextLine();
@@ -43,11 +48,21 @@ public class Table {
                 String data = scanner.nextLine();
                 String[] result = data.split(",");
                 if (result[actual].equals(result[predicted])) {
+=======
+            File trainingSet = new File("KDE_Results1.csv");
+            scanner = new Scanner(trainingSet);
+            scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                String data = scanner.nextLine();
+                String[] results = data.split(",");
+                if (results[actual].equals(results[predicted])) {
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
                     fullycorrect = fullycorrect + 1.0;
                 } else {
                     fullywrong = fullywrong + 1.0;
                 }
 
+<<<<<<< HEAD
                 if(result[actual].equals("Normal")&&result[predicted].equals("Normal")){
                     trueNeg+=1.0;
                 }
@@ -58,6 +73,18 @@ public class Table {
                     truePos+=1.0;
                 }
                 else if(!result[actual].equals("Normal")&&result[predicted].equals("Normal")){
+=======
+                if(results[actual].equals("Normal")&&results[predicted].equals("Normal")){
+                    trueNeg+=1.0;
+                }
+                else if(results[actual].equals("Normal")&&!results[predicted].equals("Normal")){
+                    falsePos+=1.0;
+                }
+                else if(!results[actual].equals("Normal")&&!results[predicted].equals("Normal")){
+                    truePos+=1.0;
+                }
+                else if(!results[actual].equals("Normal")&&results[predicted].equals("Normal")){
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
                     falseNeg+=1.0;
                 }
             }
@@ -79,6 +106,7 @@ public class Table {
 
     }
 
+<<<<<<< HEAD
     public static void main1(String[] args) {
         int[] Count = new int[10];
         int[] CountP = new int[10];
@@ -117,4 +145,6 @@ public class Table {
 
     }
 
+=======
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
 }

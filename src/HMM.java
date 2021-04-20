@@ -23,16 +23,23 @@ public class HMM {
         double falsePos=0.0;
         double trueNeg=0.0;
         double falseNeg=0.0;
+<<<<<<< HEAD
         int actual = 0;
         int predicted = 1;
+=======
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         try {
             Hashtable<String,Double>[][] discParam = NaiveBayes.DiscreteParameters(); //proto,service,state,ct_state_ttl
             KernelDensityEstimator[][] contParam = NaiveBayes.KernelDensityProb();  //dur, dpkts, sbytes,dttl, sjit, ackdat, smean, dmean, ct_dst_src_ltm, ct_flw_http_mthd
             //ct_srv_dst, trans_depth, attack_cat
 
             List<String>[] results = HMMResults(discParam,contParam);
+<<<<<<< HEAD
             PrintStream fileWriter = new PrintStream(new File("HMM_KDE_Results.csv"));
 
+=======
+            PrintStream fileWriter = new PrintStream(new File("HMM_Results.csv"));
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
             for (int i = 0; i < results[1].size(); i++) {
                 fileWriter.println(results[0].get(i)+","+results[1].get(i));
                 if (results[0].get(i).equals(results[1].get(i))) {
@@ -45,6 +52,7 @@ public class HMM {
                 } else {
                     partialwrong = partialwrong + 1.0;
                 }
+<<<<<<< HEAD
                 if(results[actual].get(i).equals("Normal")&&results[predicted].get(i).equals("Normal")){
                     trueNeg+=1.0;
                 }
@@ -56,6 +64,19 @@ public class HMM {
                 }
                 else if(!results[actual].get(i).equals("Normal")&&results[predicted].get(i).equals("Normal")){
                     falseNeg+=1.0;
+=======
+                if(results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
+                    trueNeg+=1.0;
+                }
+                else if(results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
+                    falseNeg+=1.0;
+                }
+                else if(!results[0].get(i).equals("Normal")&&!results[1].get(i).equals("Normal")){
+                    truePos+=1.0;
+                }
+                else if(!results[0].get(i).equals("Normal")&&results[1].get(i).equals("Normal")){
+                    falsePos+=1.0;
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
                 }
             }
         }
@@ -77,7 +98,13 @@ public class HMM {
         System.out.println("True Positive:"+truePos);
         System.out.println("False Negative:"+falseNeg);
         System.out.println("True Negative:"+trueNeg);
+<<<<<<< HEAD
    /*     double[][] tp = TransitionProbs();
+=======
+
+   /*     double[][] tp = TransitionProbs();
+
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         for(double[] row : tp) {
             for (double i : row) {
                 System.out.print(i);
@@ -101,7 +128,11 @@ public class HMM {
             }
             AttackCount[i]=1.0;
         }
+<<<<<<< HEAD
         File trainingSet = new File("Dataset/reduced_training-set.csv");
+=======
+        File trainingSet = new File("reduced_training-set.csv");
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
         scanner = new Scanner(trainingSet);
         scanner.nextLine();
         int current = -1;
@@ -109,7 +140,11 @@ public class HMM {
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             String[] datum = data.split(",");
+<<<<<<< HEAD
             current = Shared.whichAttack(datum[Shared.getAttack_cat()]);
+=======
+            current = Shared.whichAttack(datum);
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
             AttackCount[current] +=1.0;
             TransitionCount[prev][current] += 1.0;
             prev = current;
@@ -140,6 +175,7 @@ public class HMM {
         }
         List<String>[] results = new ArrayList[]{new ArrayList<String>(),new ArrayList<String>()};
         String[] attacks = new String[]{"Analysis","Backdoor","DoS","Exploits","Fuzzers","Generic","Reconnaissance","Shellcode","Worms","Normal"};
+<<<<<<< HEAD
         scanner = new Scanner(Shared.getTestingSet());
         scanner.nextLine();
         while (scanner.hasNextLine()) {
@@ -182,6 +218,50 @@ public class HMM {
             prev = greatest;
         }
         scanner.close();
+=======
+            scanner = new Scanner(Shared.getTestingSet());
+            scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                double[] ProbAttacks = new double[10];
+                for (int i = 0; i < 10; i++) {
+                    ProbAttacks[i]=log(attackCount[i]/attackSum);
+                }
+                String data = scanner.nextLine();
+                String[] datum = data.split(",");
+                results[0].add(datum[Shared.getAttack_cat()]);
+
+                for (int attack = 0; attack < 10; attack++) {
+                    //discrete features
+                    for (int feature = 0; feature < 4; feature++) {
+                        if (discParam[1][attack].containsKey(datum[Shared.getDiscFeatures()[feature]])) {
+                            ProbAttacks[attack] += log(discParam[1][attack].get(datum[Shared.getDiscFeatures()[feature]]));
+                        }
+                        else {
+                            ProbAttacks[attack] += log(discParam[1][attack].get("smallest"));
+                        }
+                    }
+
+                    //continous features
+                    for (int feature = 0; feature < 12; feature++) {
+                        double x = parseDouble(datum[Shared.getContFeatures()[feature]]);
+                        ProbAttacks[attack] += log(contParam[feature][attack].getProb(x));
+                    }
+
+                }
+                int greatest = 1;
+                double probOfGreatest = ProbAttacks[greatest]*transitionProbs[prev][greatest];
+                for (int i = 1; i < 10; i++) {
+                    double probOfattack = ProbAttacks[i]*transitionProbs[prev][i];
+                    if(probOfattack>probOfGreatest){
+                        greatest=i;
+                        probOfGreatest = ProbAttacks[greatest]*transitionProbs[prev][greatest];
+                    }
+                }
+                results[1].add(attacks[greatest]);
+                prev = greatest;
+            }
+            scanner.close();
+>>>>>>> 1e10fb7ca6aea5e172f3fa8e27ff9da24c702276
 
         return results;
     }
