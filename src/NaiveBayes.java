@@ -24,7 +24,7 @@ public interface NaiveBayes {
         PrintStream fileWriter;
         switch (type) {
             case ("Gaussian"):
-                fileWriter = new PrintStream(new File("NB_Gaussian_Results.csv"));
+                fileWriter = new PrintStream(new File("Results/NB_Gaussian_Results.csv"));
                 break;
             case ("KDE"):
                 fileWriter = new PrintStream(new File("Results/NB_KDE_Results.csv"));
