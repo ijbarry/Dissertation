@@ -75,6 +75,7 @@ public class NaiveBayes_Gaussian extends NaiveBayes{
         for (int i=0;i<13;i++){
             for (int j=0;j<10;j++){
                 GaussianProb[i][j]=new Gaussian(contParam[i][j].getLeft(),contParam[i][j].getRight());
+//                System.out.println(contParam[i][j].getLeft()+","+contParam[i][j].getRight());
             }
         }
         return GaussianProb;

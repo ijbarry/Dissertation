@@ -14,34 +14,32 @@ public class HMM {
     //First-order HMM
     static double[][] TransitionProbs() throws FileNotFoundException {
         Scanner scanner=null;
-        double AttackCount[]=new double[11];
-        double[][] TransitionCount=new double[11][11];
-        for (int i = 0; i <11 ; i++) { //add-one-smoothed
-            for (int j = 0; j <11 ; j++) {
+        double[][] TransitionCount=new double[12][12];
+        for (int i = 0; i <12 ; i++) { //add-one-smoothed
+            for (int j = 0; j <12 ; j++) {
                 TransitionCount[i][j]=1.0;
             }
-            AttackCount[i]=1.0;
         }
         scanner = new Scanner(Shared.getTrainingSet());
         scanner.nextLine();
         int current = -1;
-        int prev =10; //start case
+        int prev =11; //start case
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             String[] datum = data.split(",");
             current = Shared.whichAttack(datum[Shared.getAttack_cat()]);
-            AttackCount[current] +=1.0;
+            attackCount[current] +=1.0;
             TransitionCount[prev][current] += 1.0;
             prev = current;
         }
-        TransitionCount[current][10] += 1.0; //end case
+        TransitionCount[current][11] += 1.0; //end case
 
-        for (int i = 0; i < 11 ; i++) {
+        for (int i = 0; i < 10 ; i++) {
             for (int j = 0; j < 10 ; j++) {
-                AttackCount[i] += TransitionCount[i][j];
+                attackCount[i] += TransitionCount[i][j];
             }
-            for (int j = 0; j < 11 ; j++) {
-                TransitionCount[i][j] = TransitionCount[i][j]/AttackCount[i];
+            for (int j = 0; j < 12 ; j++) {
+                TransitionCount[i][j] = TransitionCount[i][j]/attackCount[i];
             }
         }
         scanner.close();
@@ -53,7 +51,7 @@ public class HMM {
         Scanner scanner=null;
         double attackSum =0.0;
 
-        int prev =10; //start case
+        int prev =11; //start case
 
         for (double count:attackCount) {
             attackSum += count;
@@ -93,9 +91,8 @@ public class HMM {
             double probOfGreatest = ProbAttacks[greatest]*transitionProbs[prev][greatest];
             for (int i = 1; i < 10; i++) {
                 double probOfattack = ProbAttacks[i]*transitionProbs[prev][i];
-                if(probOfattack<probOfGreatest){
+                if(probOfattack<ProbAttacks[greatest]){
                     greatest=i;
-                    probOfGreatest = ProbAttacks[greatest]*transitionProbs[prev][greatest];
                 }
             }
             results[1].add(attacks[greatest]);

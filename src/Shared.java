@@ -31,8 +31,7 @@ public class Shared {
     private static int ct_srv_dst=14;
     private static int	trans_depth=15;
     private static int[] contFeatures= new int[]{dur,dpkts,sbytes,dttl,sjit,ackdat,smean,dmean,ct_dst_src_ltm,ct_flw_http_mthd,ct_srv_dst,trans_depth};
-
-
+    
     //attacks
     private static int analysis=0;
     private static int backdoor=1;

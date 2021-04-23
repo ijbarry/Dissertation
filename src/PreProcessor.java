@@ -1,10 +1,15 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 public class PreProcessor {
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         int dur=1;
         int proto=2;
         int service=3;
@@ -48,4 +53,30 @@ public class PreProcessor {
             e2.printStackTrace();
         }
     }
+
+
+    public static void main(String[] args) {
+        try {
+            File ValidationSet = new File("Dataset/reduced_validation-set.csv");
+            FileWriter fileWriter = new FileWriter("Dataset/reduced_validation-set.csv");
+            BufferedWriter bw = new BufferedWriter(fileWriter);
+            Random ran = new Random();
+            for (int i = 0; i < 8233; i++) {
+                try (Stream<String> lines = Files.lines(Paths.get("Dataset/UNSW_NB15_training-set.csv"))) {
+                    String line = lines.skip(ran.nextInt(82332)).findFirst().get();
+                    bw.write(line);
+                    bw.newLine();
+                }
+            }
+            bw.flush();
+            bw.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException.");
+            e.printStackTrace();
+        } catch (IOException e2) {
+            System.out.println("IOException.");
+            e2.printStackTrace();
+        }
+    }
+
 }

@@ -34,6 +34,16 @@ public class Table {
         double falsePos=0.0;
         double trueNeg=0.0;
         double falseNeg=0.0;
+        int a=0;
+        int b=0;
+        int d=0;
+        int e=0;
+        int f=0;
+        int g=0;
+        int r=0;
+        int s=0;
+        int w=0;
+
         try {
             Scanner scanner=null;
             File results = new File("Results/Perceptron_Results.csv");
@@ -47,24 +57,42 @@ public class Table {
                 } else {
                     fullywrong = fullywrong + 1.0;
                 }
-
-                if(result[actual].equals("Normal")&&result[predicted].equals("Normal")){
+                String attack = "Normal";
+                if(result[actual].equals(attack)&&result[predicted].equals(attack)){
                     trueNeg+=1.0;
                 }
-                else if(result[actual].equals("Normal")&&!result[predicted].equals("Normal")){
+                else if(result[actual].equals(attack)&&!result[predicted].equals(attack)){
                     falsePos+=1.0;
+                    switch (result[predicted]){
+                        case "Analysis":
+                            a++;
+                            break;
+                        case "Backdoor":
+                            b++;
+                            break;
+                        case "DoS":
+                            d++;
+                            break;
+                        case "Exploits": e++; break;
+                        case "Fuzzers": f++; break;
+                        case "Generic": g++; break;
+                        case "Reconnaissance": r++; break;
+                        case "Shellcode": s++; break;
+                        case "Worms": w++; break;
+                        default:
+                    }
                 }
-                else if(!result[actual].equals("Normal")&&!result[predicted].equals("Normal")){
+                else if(!result[actual].equals(attack)&&!result[predicted].equals(attack)){
                     truePos+=1.0;
                 }
-                else if(!result[actual].equals("Normal")&&result[predicted].equals("Normal")){
+                else if(!result[actual].equals(attack)&&result[predicted].equals(attack)){
                     falseNeg+=1.0;
                 }
             }
         }
-        catch (IOException e){
+        catch (IOException ea){
             System.out.println("IOException.");
-            e.printStackTrace();
+            ea.printStackTrace();
         }
         System.out.println("correct type:"+fullycorrect);
         System.out.println("wrong type:"+fullywrong);
@@ -76,6 +104,11 @@ public class Table {
         System.out.println("False Negative:"+falseNeg);
         System.out.println("True Negative:"+trueNeg);
 
+        double overallaccuracy= (trueNeg+truePos)/(fullycorrect+fullywrong);
+        double precision= truePos/(truePos+falsePos);
+        double recall= truePos/(truePos+falseNeg);
+        System.out.println(overallaccuracy+","+precision+","+recall);
+        System.out.println(a+"&"+b+"&"+d+"&"+e+"&"+f+"&"+g+"&"+r+"&"+s+"&"+w);
 
     }
 
