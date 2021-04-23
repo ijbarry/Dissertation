@@ -7,9 +7,10 @@ public class OneHotEncoder {
     public static void main(String[] args) {
         try {
             boolean train = false;
-            oneHotEncoder(train);
-            scaling(train);
-            write(train);
+            boolean test = false;
+            oneHotEncoder(train,test);
+            scaling(train,test);
+            write(train,test);
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException.");
             e.printStackTrace();
@@ -19,17 +20,21 @@ public class OneHotEncoder {
         }
     }
 
-    private static void oneHotEncoder(boolean train)throws IOException{
+    private static void oneHotEncoder(boolean train,boolean test)throws IOException{
         Set<String>[] discVals = types();
         File read = null;
         File write = null;
         FileWriter fileWriter;
         if(train){
-            read =new File("Dataset/reduced_training-set.csv");
+            read =new File("Dataset/reduced_validation-set.csv");
             write = new File("Dataset/one_hot_training-set.csv");
-        }else {
+        }else if(test) {
             read = new File("Dataset/reduced_testing-set.csv");
             write = new File("Dataset/one_hot_testing-set.csv");
+        }
+        else {
+            read = new File("Dataset/reduced_validation-set.csv");
+            write = new File("Dataset/one_hot_validation-set.csv");
         }
         fileWriter = new FileWriter(write);
         BufferedWriter bw = new BufferedWriter(fileWriter);
@@ -94,7 +99,7 @@ public class OneHotEncoder {
 
     }
 
-    private static void scaling(boolean train) throws IOException {
+    private static void scaling(boolean train,boolean test) throws IOException {
         File read = null;
         File write = null;
         FileWriter fileWriter;
@@ -102,9 +107,13 @@ public class OneHotEncoder {
         if(train){
             read =new File("Dataset/one_hot_training-set.csv");
             write = new File("Dataset/scaled_one_hot_training-set.csv");
-        }else {
+        }else if(test){
             read = new File("Dataset/one_hot_testing-set.csv");
             write = new File("Dataset/scaled_one_hot_testing-set.csv");
+        }
+        else {
+            read = new File("Dataset/one_hot_validation-set.csv");
+            write = new File("Dataset/scaled_one_hot_validation-set.csv");
         }
         Scanner scanner = new Scanner(read);
         fileWriter = new FileWriter(write);
@@ -148,7 +157,7 @@ public class OneHotEncoder {
         scanner.close();
     }
 
-    private static void write(boolean train) throws IOException {
+    private static void write(boolean train,boolean test) throws IOException {
         Set<String>[] discVals = types();
         File read = null;
         File write = null;
@@ -156,9 +165,12 @@ public class OneHotEncoder {
         if(train){
             read =new File("Dataset/one_hot_training-set.csv");
             write = new File("Dataset/scaled_one_hot_training-set.csv");
-        }else {
+        }else if(test){
             read = new File("Dataset/one_hot_testing-set.csv");
             write = new File("Dataset/scaled_one_hot_testing-set.csv");
+        }else{
+            read = new File("Dataset/one_hot_validation-set.csv");
+            write = new File("Dataset/scaled_one_hot_validation-set.csv");
         }
         fileWriter = new FileWriter(write);
         BufferedWriter bw = new BufferedWriter(fileWriter);

@@ -64,7 +64,11 @@ public class PreProcessor {
             for (int i = 0; i < 8233; i++) {
                 try (Stream<String> lines = Files.lines(Paths.get("Dataset/UNSW_NB15_training-set.csv"))) {
                     String line = lines.skip(ran.nextInt(82332)).findFirst().get();
-                    bw.write(line);
+                    String[] datum = line.split(",");
+                    bw.write(datum[1]+","+datum[2]+","+datum[3]+","+
+                            datum[4]+","+datum[5]+","+datum[6]+","+datum[7]+","+
+                            datum[8]+","+datum[9]+","+datum[10]+","+
+                            datum[11]+","+datum[12]+","+datum[13]+","+datum[14]+","+datum[15]+","+datum[16]+","+datum[17]);
                     bw.newLine();
                 }
             }
