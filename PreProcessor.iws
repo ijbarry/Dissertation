@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97d4053c-ae30-4ba5-9dcb-be06556861f1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Dataset/one_hot_validation-set.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Dataset/one_hot_validation-set.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dataset/reduced_validation-set.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Dataset/reduced_validation-set.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dataset/scaled_one_hot_validation-set.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Dataset/scaled_one_hot_validation-set.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PreProcessor.iws" beforeDir="false" afterPath="$PROJECT_DIR$/PreProcessor.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OneHotEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OneHotEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/HMM_Gaussian_Results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Results/HMM_Gaussian_Results.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/NB_Gaussian_Results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Results/NB_Gaussian_Results.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Gaussian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Gaussian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HMM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HMM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PreProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PreProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Table.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,23 +57,23 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.OneHotEncoder">
+  <component name="RunManager" selected="Application.HMM_Gaussian">
     <configuration name="HMM_Gaussian" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="HMM_Gaussian" />
-      <module name="Dissertation" />
+      <module name="PreProcessor" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NaiveBayes_Gaussian" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="NaiveBayes_Gaussian" />
+      <module name="PreProcessor" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="OneHotEncoder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="OneHotEncoder" />
-      <module name="PreProcessor" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Perceptron" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Perceptron" />
       <module name="PreProcessor" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -89,11 +95,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.NaiveBayes_Gaussian" />
+        <item itemvalue="Application.HMM_Gaussian" />
         <item itemvalue="Application.OneHotEncoder" />
         <item itemvalue="Application.PreProcessor" />
-        <item itemvalue="Application.Perceptron" />
         <item itemvalue="Application.Table" />
-        <item itemvalue="Application.HMM_Gaussian" />
       </list>
     </recent_temporary>
   </component>
@@ -111,7 +117,8 @@
       <workItem from="1618937648076" duration="109000" />
       <workItem from="1618937770774" duration="1394000" />
       <workItem from="1618939192107" duration="84000" />
-      <workItem from="1618939331516" duration="20584000" />
+      <workItem from="1618939331516" duration="23437000" />
+      <workItem from="1619273385340" duration="7181000" />
     </task>
     <task id="LOCAL-00001" summary="Please">
       <created>1618934762165</created>
@@ -183,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619193989835</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Forgot">
+      <created>1619195188573</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1619195188573</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,7 +225,8 @@
     <MESSAGE value="Extends addes" />
     <MESSAGE value="Dissertation rename" />
     <MESSAGE value="Tidying up and adding forgotten files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tidying up and adding forgotten files" />
+    <MESSAGE value="Forgot" />
+    <option name="LAST_COMMIT_MESSAGE" value="Forgot" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -46,19 +46,20 @@ public class Table {
 
         try {
             Scanner scanner=null;
-            File results = new File("Results/Perceptron_Results.csv");
+            File results = new File("Results/NB_KDE_Results.csv");
             scanner = new Scanner(results);
             scanner.nextLine();
+
             while (scanner.hasNextLine()) {
                 String data = scanner.nextLine();
                 String[] result = data.split(",");
-                if (result[actual].equals(result[predicted])) {
+                /*if (result[actual].equals(result[predicted])) {
                     fullycorrect = fullycorrect + 1.0;
                 } else {
                     fullywrong = fullywrong + 1.0;
                 }
-                String attack = "Normal";
-                if(result[actual].equals(attack)&&result[predicted].equals(attack)){
+                */String attack = "Worms";
+                /*if(result[actual].equals(attack)&&result[predicted].equals(attack)){
                     trueNeg+=1.0;
                 }
                 else if(result[actual].equals(attack)&&!result[predicted].equals(attack)){
@@ -86,6 +87,13 @@ public class Table {
                     truePos+=1.0;
                 }
                 else if(!result[actual].equals(attack)&&result[predicted].equals(attack)){
+                    falseNeg+=1.0;
+                }*/
+
+                if(result[actual].equals(attack)&&!result[predicted].equals("Normal")){
+                    truePos+=1.0;
+                }
+                if(result[actual].equals(attack)&&result[predicted].equals("Normal")){
                     falseNeg+=1.0;
                 }
             }

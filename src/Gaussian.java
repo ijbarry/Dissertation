@@ -19,6 +19,10 @@ public class Gaussian extends Estimator{
 
     @Override
     public double getProb(double x) {
-        return exp(-0.5*pow((x-mean)/stdDev,2))/(stdDev*sqrt(2*pi)); // (e^(((x-u)/rho)^2))/(rho*sqrt(2pi))
+        double norm = (x-this.mean)/this.stdDev;
+        if(exp(-0.5*norm*norm)/(stdDev*sqrt(2*pi)) ==0){
+            return 0.0000001;
+        }
+        return exp(-0.5*(norm*norm))/(stdDev*sqrt(2*pi)); // (e^(((x-u)/2*rho)^2))/(rho*sqrt(2pi))
     }
 }
